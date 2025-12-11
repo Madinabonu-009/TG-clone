@@ -1,9 +1,12 @@
 services:
   - type: web
-    name: telegram-clone
+    name: tg-clone-2
     env: node
-    buildCommand: npm cache clean --force && npm install && npm run build
-    startCommand: npm start
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
@@ -14,4 +17,4 @@ services:
       - key: JWT_SECRET
         sync: false
       - key: CORS_ORIGIN
-        sync: false
+        value: https://tg-clone-2.onrender.com
