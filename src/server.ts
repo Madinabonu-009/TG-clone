@@ -94,8 +94,9 @@ process.on('SIGINT', shutdown);
 const startServer = async () => {
   try {
     await connectMongoDB();
-    httpServer.listen(config.port, () => {
-      console.log(`Server running on port ${config.port}`);
+    const host = '0.0.0.0'; // Required for Render.com
+    httpServer.listen(config.port, host, () => {
+      console.log(`Server running on ${host}:${config.port}`);
       console.log(`Environment: ${config.nodeEnv}`);
     });
   } catch (error) {
