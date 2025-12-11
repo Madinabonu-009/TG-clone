@@ -103,7 +103,12 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const newSocket = io('http://localhost:3000', {
+    // Use current origin for production, localhost for development
+    const socketUrl = import.meta.env.PROD 
+      ? window.location.origin 
+      : 'http://localhost:3000';
+    
+    const newSocket = io(socketUrl, {
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnection: true,
