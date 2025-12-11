@@ -47,12 +47,27 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/settings', settingsRoutes);
 
+// Serve static files from client build (production)
+if (config.nodeEnv === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+}
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
 });
 
-// 404 handler
+// SPA fallback for client-side routing (production)
+if (config.nodeEnv === 'production') {
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/') || req.path === '/health') {
+      return next();
+    }
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  });
+}
+
+// 404 handler for API routes
 app.use((req, res) => {
   res.status(404).json({
     error: {
