@@ -104,7 +104,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     }
 
     // Use current origin for production, localhost for development
-    const socketUrl = import.meta.env.PROD 
+    const isProduction = window.location.hostname !== 'localhost';
+    const socketUrl = isProduction 
       ? window.location.origin 
       : 'http://localhost:3000';
     
