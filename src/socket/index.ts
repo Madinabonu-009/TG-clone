@@ -14,12 +14,16 @@ const typingUsers = new Map<string, Set<string>>();
 let io: Server;
 
 export function initializeSocket(httpServer: HttpServer): Server {
+  const isProduction = config.nodeEnv === 'production';
+  
   io = new Server(httpServer, {
     cors: {
-      origin: config.cors.origin,
+      origin: isProduction ? true : config.cors.origin,
       methods: ['GET', 'POST'],
       credentials: true
-    }
+    },
+    // Allow both transports for better compatibility
+    transports: ['websocket', 'polling']
   });
 
   // Authentication middleware

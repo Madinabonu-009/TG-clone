@@ -27,7 +27,7 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 app.use(cors({
-  origin: config.cors.origin,
+  origin: config.nodeEnv === 'production' ? true : config.cors.origin,
   credentials: true
 }));
 app.use(express.json({ limit: '5mb' })); // Increased for photo uploads
